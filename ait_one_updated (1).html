@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AITU One</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#182b5c;color:white;padding:14px 5%;display:flex;align-items:center;gap:24px;min-height:72px}
+.profile{display:flex;align-items:center;gap:10px;min-width:180px}
+.profile-avatar{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 3px 10px #0002}
+.profile-info{line-height:1.15}.profile-info strong{display:block;font-size:14px}.profile-info span{font-size:12px;color:#cbd6f5}
+.logo{font-size:24px;font-weight:bold;margin-right:auto}
+nav{display:flex;align-items:center;gap:4px}nav button{background:none;border:0;color:white;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px}nav button:hover{background:#ffffff18}
+.container{max-width:1150px;margin:30px auto;padding:0 20px}
+.hero{background:white;border-radius:18px;padding:28px;box-shadow:0 4px 16px #00000010}.hero h1{margin:0 0 8px;font-size:30px}.hero p{color:#667085}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}.card{background:white;padding:20px;border-radius:16px;box-shadow:0 4px 16px #0000000d}.card h3{margin-top:0}.next{border-left:5px solid #2d6cdf}
+.today-list{margin:12px 0 18px;padding-left:20px;color:#475467}.today-list li{margin:7px 0}
+.schedule{margin-top:25px}.schedule-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.map-button{display:inline-flex;align-items:center;gap:8px;text-decoration:none;background:#182b5c;color:#fff;padding:11px 16px;border-radius:9px;font-size:14px}.map-button:hover{background:#233b7c}
+button.primary{background:#2d6cdf;color:white;border:0;padding:11px 16px;border-radius:9px;cursor:pointer}
+table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px #00000008}th,td{text-align:left;padding:15px;border-bottom:1px solid #eee}th{background:#eef3ff}
+.room{cursor:pointer;color:#2d6cdf;font-weight:bold}.hidden{display:none}.message{margin-top:15px;padding:12px;background:#eaf7ee;border-radius:9px;color:#216b3a}.subject-tag{display:inline-block;padding:4px 8px;border-radius:999px;background:#eef3ff;color:#2d6cdf;font-size:12px;font-weight:bold}
+@media(max-width:900px){header{flex-wrap:wrap}.logo{margin-right:0}nav{width:100%;overflow:auto}.cards{grid-template-columns:1fr}}
+@media(max-width:600px){.profile-info{display:none}.profile{min-width:auto}header{padding:12px 4%}.container{margin-top:18px}th,td{padding:11px 8px;font-size:13px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="profile" aria-label="Student profile">
+    <div class="profile-avatar">
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="#eef3ff"/>
+        <circle cx="32" cy="24" r="10" fill="#2d6cdf"/>
+        <path d="M15 51c2-10 9-15 17-15s15 5 17 15" fill="#2d6cdf"/>
+      </svg>
+    </div>
+    <div class="profile-info"><strong>Student Profile</strong><span>AITU • 1st year</span></div>
+  </div>
+  <div class="logo">AITU One</div>
+  <nav>
+    <button onclick="showHome()">Home</button>
+    <button onclick="showSchedule()">Schedule</button>
+    <button onclick="showPage('assignments')">Assignments</button>
+    <button onclick="showPage('grades')">Grades</button>
+    <button onclick="showPage('lectures')">Online Lectures</button>
+  </nav>
+</header>
+
+<main class="container">
+  <section id="home">
+    <div class="hero">
+      <h1>Good morning, Student 👋</h1>
+      <p>Everything you need for university in one place.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card next">
+        <h3>Next class</h3>
+        <p><b>ICT</b></p>
+        <p>09:00 – 10:30</p>
+        <p class="room" onclick="showRoom('C1.1.361')">Room C1.1.361 →</p>
+      </div>
+      <div class="card">
+        <h3>Today's classes</h3>
+        <p><b>7 classes</b> · Monday, September 29</p>
+        <ul class="today-list">
+          <li><span class="subject-tag">ICT</span> 09:00–10:30</li>
+          <li><span class="subject-tag">Programming</span> 11:00–12:30</li>
+          <li><span class="subject-tag">English</span> 13:00–14:00</li>
+          <li><span class="subject-tag">Psychology</span> 14:00–15:00</li>
+          <li><span class="subject-tag">Sociology</span> 15:00–16:00</li>
+          <li><span class="subject-tag">Physical Education</span> 16:00–17:00</li>
+          <li><span class="subject-tag">Discrete Mathematics</span> 17:00–18:30</li>
+        </ul>
+        <button class="primary" onclick="showSchedule()">View schedule</button>
+      </div>
+      <div class="card">
+        <h3>Quick access</h3>
+        <p class="room" onclick="showPage('assignments')">📝 Assignments →</p>
+        <p class="room" onclick="showPage('grades')">📊 Grades →</p>
+        <p class="room" onclick="showPage('lectures')">🎥 Online lectures →</p>
+      </div>
+    </div>
+
+    <div id="roomMessage"></div>
+  </section>
+
+  <section id="schedule" class="schedule hidden">
+    <div class="hero">
+      <h1>Today's Schedule</h1>
+      <p>Monday, September 29 · 7 classes</p>
+      <div class="schedule-actions">
+        <a class="map-button" href="https://yuujiso.github.io/aitumap/" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 6.5 9 4l6 2.5L21 4v13.5L15 20l-6-2.5L3 20V6.5Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M9 4v13.5M15 6.5V20" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Open University Map
+        </a>
+        <button class="primary" onclick="showHome()">Back to home</button>
+      </div>
+    </div>
+    <br>
+    <table>
+      <tr><th>Time</th><th>Subject</th><th>Teacher</th><th>Room</th></tr>
+      <tr><td>09:00–10:30</td><td>ICT</td><td>Mr. Smith</td><td class="room" onclick="showRoom('C1.1.361')">C1.1.361</td></tr>
+      <tr><td>11:00–12:30</td><td>Programming</td><td>Mr. Kim</td><td class="room" onclick="showRoom('C1.1.362')">C1.1.362</td></tr>
+      <tr><td>13:00–14:00</td><td>English</td><td>Ms. Lee</td><td class="room" onclick="showRoom('C1.1.215')">C1.1.215</td></tr>
+      <tr><td>14:00–15:00</td><td>Psychology</td><td>Dr. Adams</td><td class="room" onclick="showRoom('C1.1.318')">C1.1.318</td></tr>
+      <tr><td>15:00–16:00</td><td>Sociology</td><td>Dr. Wilson</td><td class="room" onclick="showRoom('C1.1.319')">C1.1.319</td></tr>
+      <tr><td>16:00–17:00</td><td>Physical Education</td><td>Mr. Brown</td><td class="room" onclick="showRoom('Gym-1')">Gym-1</td></tr>
+      <tr><td>17:00–18:30</td><td>Discrete Mathematics</td><td>Ms. Brown</td><td class="room" onclick="showRoom('C1.1.407')">C1.1.407</td></tr>
+    </table>
+    <div id="scheduleMessage"></div>
+  </section>
+
+  <section id="assignments" class="schedule hidden">
+    <div class="hero">
+      <h1>Assignments</h1>
+      <p>Your current university assignments.</p>
+    </div><br>
+    <div class="cards">
+      <div class="card"><h3>ICT Project</h3><p>UX Sprint website</p><p><b>Due:</b> October 2</p><button class="primary" onclick="alert('Assignment opened!')">Open assignment</button></div>
+      <div class="card"><h3>Mathematics</h3><p>Chapter 3 exercises</p><p><b>Due:</b> October 4</p><button class="primary" onclick="alert('Assignment opened!')">Open assignment</button></div>
+    </div>
+  </section>
+
+  <section id="grades" class="schedule hidden">
+    <div class="hero">
+      <h1>Grades</h1>
+      <p>Your recent results.</p>
+    </div><br>
+    <table>
+      <tr><th>Subject</th><th>Assignment</th><th>Grade</th></tr>
+      <tr><td>ICT</td><td>UX Sprint</td><td><b>92%</b></td></tr>
+      <tr><td>Mathematics</td><td>Chapter 3</td><td><b>88%</b></td></tr>
+      <tr><td>English</td><td>Research Task</td><td><b>95%</b></td></tr>
+    </table>
+  </section>
+
+  <section id="lectures" class="schedule hidden">
+    <div class="hero">
+      <h1>Online Lectures</h1>
+      <p>Access your online classes.</p>
+    </div><br>
+    <div class="cards">
+      <div class="card"><h3>ICT Lecture</h3><p>Lecture 3 — UX Design</p><button class="primary" onclick="alert('Opening online lecture...')">Join lecture</button></div>
+      <div class="card"><h3>Mathematics Lecture</h3><p>Chapter 3 — Functions</p><button class="primary" onclick="alert('Opening online lecture...')">Join lecture</button></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+function showHome(){
+ document.getElementById('home').classList.remove('hidden');
+ document.getElementById('schedule').classList.add('hidden');
+}
+function showSchedule(){
+ document.getElementById('home').classList.add('hidden');
+ document.getElementById('schedule').classList.remove('hidden');
+}
+function showRoom(room){
+ const msg = '<div class="message">📍 Room '+room+' — AITU Main Building. <a href="https://yuujiso.github.io/aitumap/" target="_blank" rel="noopener noreferrer">Open university map →</a></div>';
+ document.getElementById('roomMessage').innerHTML=msg;
+ document.getElementById('scheduleMessage').innerHTML=msg;
+}
+function showPage(page){
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(page).classList.remove('hidden');
+}
+</script>
+</body>
+</html>
